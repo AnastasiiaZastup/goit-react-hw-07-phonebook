@@ -3,11 +3,7 @@ import { ContactForm } from './ContactForm/ContactForm';
 import { FilterContact } from './FilterContact/FilterContact';
 import { fetchContacts } from 'backoption/operations';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectContacts,
-  selectError,
-  selectIsLoading,
-} from '../redux/selectors';
+import { selectError, selectIsLoading } from '../redux/selectors';
 import { useEffect } from 'react';
 
 export const App = () => {
