@@ -11,14 +11,13 @@ import {
 import { useEffect } from 'react';
 
 export const App = () => {
-  const contact = useSelector(selectContacts);
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
 
   useEffect(() => {
-    dispatchEvent(fetchContacts());
-  }, [dispath]);
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   return (
     <>
@@ -27,7 +26,6 @@ export const App = () => {
       <h2>Contacts</h2>
       <FilterContact />
       {isLoading && !error && <b>Loading...</b>}
-      {contact.length > 0 && <ContactList />}
       <ContactList />
     </>
   );
