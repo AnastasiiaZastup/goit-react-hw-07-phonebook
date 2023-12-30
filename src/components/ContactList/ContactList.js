@@ -1,31 +1,11 @@
-import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Item, ButtonList } from './ContactList.styled';
-import { deleteContact, fetchContacts } from 'backoption/operations';
-
-import {
-  selectContacts,
-  selectError,
-  selectFilter,
-  selectVisible,
-} from '../../redux/selectors';
+import { deleteContact } from 'backoption/operations';
+import { selectVisible } from '../../redux/selectors';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(selectContacts);
-  const filter = useSelector(selectFilter);
-  const error = useSelector(selectError);
-  const visib = useSelector(selectVisible);
-
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
-
-  const getContacts = () => {
-    return visib;
-  };
-
-  const filteredContacts = getContacts();
+  const filteredContacts = useSelector(selectVisible);
 
   return (
     <div>

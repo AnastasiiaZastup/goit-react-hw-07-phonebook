@@ -8,9 +8,8 @@ import {
   ErrorMessage,
   Label,
 } from './ContactForm.styled';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addContacts } from '../../backoption/operations';
-import { selectContacts } from '../../redux/selectors';
 
 const phoneExample = /^\d{3}-\d{2}-\d{2}$/;
 
@@ -23,7 +22,6 @@ const ContactSchema = Yup.object().shape({
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(selectContacts);
 
   return (
     <Wrapper>
