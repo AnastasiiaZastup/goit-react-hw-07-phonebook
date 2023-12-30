@@ -1,11 +1,26 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Item, ButtonList } from './ContactList.styled';
-import { deleteContact } from 'backoption/operations';
-import { selectVisible } from '../../redux/selectors';
+import { deleteContact } from '../../redux/operations';
+import {
+  selectFilter,
+  selectVisible,
+  selectContacts,
+} from '../../redux/selectors';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
-  const filteredContacts = useSelector(selectVisible);
+  const visible = useSelector(selectVisible);
+  const contacts = useSelector(selectContacts);
+  const filter = useSelector(selectFilter);
+
+  const getContacts = () => {
+    if (filter === '') {
+      return contacts;
+    }
+    return visible;
+  };
+
+  const filteredContacts = getContacts();
 
   return (
     <div>
@@ -18,7 +33,7 @@ export const ContactList = () => {
             <Item key={id}>
               <p>{name}:</p>
               <p>{number}</p>
-              <ButtonList onClick={() => dispatch(deleteContact({ id }))}>
+              <ButtonList onClick={() => dispatch(deleteContact(id))}>
                 Delete
               </ButtonList>
             </Item>

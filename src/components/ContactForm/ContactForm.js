@@ -8,8 +8,9 @@ import {
   ErrorMessage,
   Label,
 } from './ContactForm.styled';
-import { useDispatch } from 'react-redux';
-import { addContacts } from '../../backoption/operations';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectContacts, selectIsLoading } from '../../redux/selectors';
+import { addContacts } from '../../redux/operations';
 
 const phoneExample = /^\d{3}-\d{2}-\d{2}$/;
 
@@ -22,6 +23,19 @@ const ContactSchema = Yup.object().shape({
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
+
+  const AddContacts = value => {
+    const check = contacts.some(
+      contact => contact.name.toLowerCase() === value.name.toLowerCase()
+    );
+    if (check) {
+      console.warn(`${value.name} is already in contacts. Contact not added.`);
+    } else {
+      dispatch(addContacts(value));
+    }
+  };
 
   return (
     <Wrapper>
@@ -32,7 +46,7 @@ export const ContactForm = () => {
         }}
         validationSchema={ContactSchema}
         onSubmit={(values, actions) => {
-          dispatch(addContacts(values));
+          AddContacts(values);
           actions.resetForm();
         }}
       >
@@ -49,7 +63,9 @@ export const ContactForm = () => {
             <ErrorMessage name="number" component="span" />
           </Label>
 
-          <button type="submit">Submit</button>
+          <button type="submit" disabled={isLoading}>
+            Submit
+          </button>
         </Form>
       </Formik>
     </Wrapper>
