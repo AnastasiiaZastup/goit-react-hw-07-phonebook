@@ -11,6 +11,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContacts, selectIsLoading } from '../../redux/selectors';
 import { addContacts } from '../../redux/operations';
+import { Report } from 'notiflix/build/notiflix-report-aio';
+import toast from 'react-hot-toast';
 
 const phoneExample = /^\d{3}-\d{2}-\d{2}$/;
 
@@ -26,15 +28,21 @@ export const ContactForm = () => {
   const contacts = useSelector(selectContacts);
   const isLoading = useSelector(selectIsLoading);
 
-  const AddContacts = value => {
-    const check = contacts.some(
-      contact => contact.name.toLowerCase() === value.name.toLowerCase()
+  const handleAddContact = values => {
+    const checkContact = contacts.some(
+      contact => contact.name.toLowerCase() === values.name.toLowerCase()
     );
-    if (check) {
-      console.warn(`${value.name} is already in contacts. Contact not added.`);
-    } else {
-      dispatch(addContacts(value));
+
+    if (checkContact) {
+      Report.warning(
+        'Contact has not been added.',
+        `${values.name} is already in contacts.`,
+        'Okay'
+      );
+      return;
     }
+    dispatch(addContacts(values));
+    toast.success('Successfully created!');
   };
 
   return (
@@ -46,7 +54,7 @@ export const ContactForm = () => {
         }}
         validationSchema={ContactSchema}
         onSubmit={(values, actions) => {
-          AddContacts(values);
+          handleAddContact(values);
           actions.resetForm();
         }}
       >
